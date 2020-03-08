@@ -1,0 +1,18 @@
+
+.Absolute-Center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%);
+  pointer-events: unset;
+  opacity: 0%;
+  pointer-events: none;
+  cursor: pointer;
+}
+.Handle-Hover:hover .Absolute-Center {
+  opacity: 100%;
+}
+
+.Handle-Hover:hover .Image {
+  opacity: 50%;
+}
+
