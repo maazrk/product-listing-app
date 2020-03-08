@@ -8,11 +8,3 @@
   pointer-events: none;
   cursor: pointer;
 }
-.Handle-Hover:hover .Absolute-Center {
-  opacity: 100%;
-}
-
-.Handle-Hover:hover .Image {
-  opacity: 50%;
-}
-

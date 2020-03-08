@@ -3,11 +3,11 @@ import '../assets/stylesheets/Product.css'
 function Product(props) {
   let bgOpacity = props.selected ? "opacity-50" : "opacity-0"
   return (
-    <div className="Handle-Hover mx-4 bg-white shadow-sm text-grey-500 transition duration-500 hover:shadow-lg" onClick={() => props.clickHandler(props.productData.id)}>
+    <div className="Handle-Hover group mx-4 bg-white shadow-sm text-grey-500 transition duration-500 hover:shadow-lg" onClick={() => props.clickHandler(props.productData.id)}>
       <div className="py-12 relative">
-        <img className="h-48 p-6 block mx-auto" src={require('../assets/' + props.productData.image) }/>
-        <div className={`Image absolute inset-0 bg-green-500 ${bgOpacity} transition duration-500 hover:opacity-50`}></div>
-        <div className="Absolute-Center w-32 text-center bg-white text-green-500 transition duration-500 text-white font-bold py-2 px-4 absolute"> { props.selected ? "REMOVE" : "COMPARE" }</div>
+        <img className="h-48 p-6 block mx-auto" src={require('../assets/' + props.productData.image) } alt="product"/>
+        <div className={`Image absolute inset-0 bg-green-500 ${bgOpacity} transition duration-500 group-hover:opacity-50`}></div>
+        <div className="Absolute-Center w-32 text-center bg-white text-green-500 transition duration-500 text-white font-bold py-2 px-4 absolute group-hover:opacity-100"> { props.selected ? "REMOVE" : "COMPARE" }</div>
       </div>
 
       <div className="p-4">

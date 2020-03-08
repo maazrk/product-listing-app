@@ -24,18 +24,61 @@ function ProductView() {
   }, [attributesList])
 
   useEffect(() => {
-
-
+    const createComparison = props => {
+      let table = [];
+      let attributes = [];
+      let activeAttributes = [];
+      for (let i = 0; i < attributesList.length; i++) {
+        if (attributeStates[attributesList[i]]) {
+          activeAttributes.push(attributesList[i]);
+        }
+      }
+      attributes.push(<div key={"Name"} className="p-4 border-b border-solid border-gray-300 text-white">NAME</div>)
+      for (let i = 0; i < activeAttributes.length; i ++) {
+        attributes.push(<div key={i} className="p-4 bg-gray-100 border-b border-solid border-gray-300"> {activeAttributes[i]} </div>)
+      }
+      table.push(<div key={"Headers"} className="bg-white capitalize">{attributes}</div>)
+      let products = [];
+      for (let i = 0; i < productStates.length; i++) {
+        if (productStates[i]) {
+          let attribute = [];
+          attribute.push(<div className="p-4 border-b border-solid border-gray-300"> {productData[i].name} </div>);
+          for (let j = 0; j < activeAttributes.length; j++) {
+            let attributeValue = productData[i][activeAttributes[j]]
+            if (activeAttributes[j] === "colors") {
+              let colors = [];
+              for (let k = 0; k < attributeValue.length; k ++) {
+                colors.push(<div className={`rounded-full h-4 w-4 m-1 bg-${attributeValue[k]}-500`}> </div>)
+              }
+              attribute.push(<div className="p-4 mx-auto border-b border-solid border-gray-300"> <div className= "flex justify-center">{colors} </div> </div>)
+            }
+            else if (activeAttributes[j] === "condition") {
+              let color = attributeValue === "Fresh" ? "bg-green-500" : "bg-red-500";
+              attribute.push(<div className={`p-4 text-white border-b border-solid border-gray-300 ${color}`}> {attributeValue} </div>)
+            }
+            else if (activeAttributes[j] === "vendors") {
+              attribute.push(<div className=" p-4 border-b border-solid border-gray-300 w-full"> {attributeValue.join(", ")} </div>)
+            }
+            else {
+              attribute.push(<div className="p-4 border-b border-solid border-gray-300"> {attributeValue} </div>)
+            }
+          }
+          products.push(<div className="bg-white text-center ">{attribute}</div>);
+        }
+      }
+      table.push(...products);
+      setCompareTable(table);
+    }
     createComparison();
-  }, [productStates, attributeStates])
+  }, [productStates, attributeStates, attributesList])
 
   const handleSelection = (id) => {
     let selectLimit = 11;
     let index = parseInt(id) - 1
     for (let i = 0; i < productStates.length; i++) {
-      if (productStates[i] == true) {
+      if (productStates[i] === true) {
         selectLimit--;
-        if (selectLimit == 0 && productStates[index] == false) {
+        if (selectLimit === 0 && productStates[index] === false) {
           return;
         }
       }
@@ -94,53 +137,7 @@ function ProductView() {
     setSearchAttributes(newList);
   };
 
-  const createComparison = props => {
-    let table = [];
-    let attributes = [];
-    let activeAttributes = [];
-    for (let i = 0; i < attributesList.length; i++) {
-      if (attributeStates[attributesList[i]]) {
-        activeAttributes.push(attributesList[i]);
-      }
-    }
 
-    attributes.push(<div key={"Name"} className="p-4 border-b border-solid border-gray-300 text-white">NAME</div>)
-    for (let i = 0; i < activeAttributes.length; i ++) {
-      attributes.push(<div key={i} className="p-4 bg-gray-100 border-b border-solid border-gray-300"> {activeAttributes[i]} </div>)
-    }
-    table.push(<div key={"Headers"} className="bg-white capitalize">{attributes}</div>)
-
-    let products = [];
-    for (let i = 0; i < productStates.length; i++) {
-      if (productStates[i]) {
-        let attribute = [];
-        attribute.push(<div className="p-4 border-b border-solid border-gray-300"> {productData[i].name} </div>);
-        for (let j = 0; j < activeAttributes.length; j++) {
-          let attributeValue = productData[i][activeAttributes[j]]
-          if (activeAttributes[j] === "colors") {
-            let colors = [];
-            for (let k = 0; k < attributeValue.length; k ++) {
-              colors.push(<div className={`rounded-full h-4 w-4 m-1 bg-${attributeValue[k]}-500`}> </div>)
-            }
-            attribute.push(<div className="p-4 mx-auto border-b border-solid border-gray-300"> <div className= "flex justify-center">{colors} </div> </div>)
-          }
-          else if (activeAttributes[j] === "condition") {
-            let color = attributeValue === "Fresh" ? "bg-green-500" : "bg-red-500";
-            attribute.push(<div className={`p-4 text-white border-b border-solid border-gray-300 ${color}`}> {attributeValue} </div>)
-          }
-          else if (activeAttributes[j] === "vendors") {
-            attribute.push(<div className=" p-4 border-b border-solid border-gray-300 w-full"> {attributeValue.join(", ")} </div>)
-          }
-          else {
-            attribute.push(<div className="p-4 border-b border-solid border-gray-300"> {attributeValue} </div>)
-          }
-        }
-        products.push(<div className="bg-white text-center ">{attribute}</div>);
-      }
-    }
-    table.push(...products);
-    setCompareTable(table);
-  }
 
   const toggleAllAttributes = props => {
     let state = props.target.checked;
@@ -158,7 +155,6 @@ function ProductView() {
     const name = props.target.name;
 
     let newState = {...attributeStates};
-    const keys = Object.keys(attributeStates);
     newState[name] = !newState[name];
     setAttributeStates(newState);
   }

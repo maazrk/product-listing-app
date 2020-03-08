@@ -1,4 +1,4 @@
-import  React, { useState } from 'react';
+import  React from 'react';
 import '../assets/stylesheets/FilterAttribute.css';
 function FilterAttribute(props) {
 
